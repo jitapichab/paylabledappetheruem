@@ -1,0 +1,3 @@
+Contract mined! address: 0x0c6a14ccbdaaade20ed00f912a6e2cb6699b9c60 transactionHash: 0x49b5122211154a903b9658759252989b4df869f41d47d66b001837b1b9b8654d
+
+Contract mined! address: 0x72b8fa51985328f279fe522d40984616ea47acc1 transactionHash: 0xeb5136c2f1fb2de35eaedff01a95360f160dc647123714d852b36058e214cc7e
