@@ -5,22 +5,41 @@
 
     <h1> Example Paylable dapp etheruem  </h1>
 
+    <br> accounts peer:
+    <br>
+    <select id="accounts"></select>
+    <br>password
+    <input type="text" name="password" id="password"><br>
+    <div>
+    <input type="submit" value="desbloquear cuenta" id="unlock_account">
+    <input type="submit" value="bloquear cuenta" id="lock_account">
+    </div>
+    <br>
+    <label id="state_account"> account state </label> <br>
+    <br> Consult balance:
+    <br>
+    <input type="submit" value="Consult Balance" id="consult_balance">
+    <br>
+    <label id="balance"> balance in Wei </label>
+    
+    
+
     <h2> collect money from the contract:</h2><br>
     <input type="text" name="collectmoney" id="collectmoneycontract"><br>
     <input type="submit" value="collect" id="collect"> <br>
-    <label id="verifimoney"> Tx Collect Money </label>
+    <label id="collectlabelmoney"> Tx Collect Money </label>
     <br>
 
     <h2> verify money in the contract:</h2><br>
     <input type="submit" value="verify" id="verify"> <br>
-    <label id="verifimoney"> Balance Contract </label>
+    <label id="verifimoney"> Balance Contract in Wei </label>
     <br>
 
 
     <h3> transfer money to the contract </h3>
     <input type="text" name="pagar contrato" id="transferiracontrato"><br>
     <input type="submit" value="transferir" id="transfermony"> <br>
-    <label id="verifimoney"> Tx transfer money </label>
+    <label id="transferlabelmoney"> Tx transfer money </label>
     <br>
 
 
@@ -32,11 +51,92 @@
   
     <!-- Consultas a la blockchain  -->  
     <script>
-      var tiempotransaccion=null;
+      var timeTransac=null;
       var estadox=null;  
-          $("#collect").click(function() {
-                       console.log("prueba de envio de datos!")
+
+      $('#unlock_account').click(function(){
+        var account_selector= $('#accounts').val();
+        var password=$('#password').val();
+        console.log(account_selector);
+        if( password!=="" && account_selector!==null){          
+          $.post("/unlockaccount/"+account_selector+'/'+password, function(res){
+            $("#state_account").text(res.datapassword);
           });
+        }   
+        else {
+          alert("insert password, please!");
+        }
+
+   });
+
+      $('#lock_account').click(function(){
+        var account_selector= $('#accounts').val();
+        $.post("/lockaccount/"+account_selector, function(res){
+          $("#state_account").text(res.datalock);
+
+        });
+
+      });
+
+      $('#consult_balance').click(function(){
+        var account_selector= $('#accounts').val();
+        $.post("/consultbalance/"+account_selector, function(res){
+
+          $("#balance").text(res.databalance);
+
+        });
+
+      });
+
+      $("#collect").click(function() {
+          var account_selector= $('#accounts').val();
+          var valueCollect=$("#collectmoneycontract").val();
+          $.post("/collectmoney/"+valueCollect+'/'+account_selector, function(res){
+              $("#collectlabelmoney").text(res.datacollect);
+              
+          });
+        
+      });
+
+      $("#verify").click(function() {
+        //var valueCollect=$("#collectmoneycontract").val();
+        $.post("/verifymoney/", function(res){
+          console.log(res.dataverify);
+          $("#verifimoney").text(res.dataverify); 
+        });
+        
+      });
+
+      $("#transfer").click(function() {
+        var account_selector= $('#accounts').val();
+        $.post("/transfermoney/"+value+'/'+account_selector, function(res){
+          console.log(res.dataverify);
+          $("#verifimoney").text(res.dataverify); 
+        });
+        
+      });
+
+
+
+
+
+
+
+
+          
+      window.onload = function() {
+        console.log("the event load page is true");
+        $.post("/getaccounts/", function(res){
+          var accountsjson=res.dataaccount;
+          for(i=0; i<accountsjson.length;i++){
+              $('#accounts').append($('<option>',
+                  {
+                      value: accountsjson[i],
+                      text : accountsjson[i]
+                  })); 
+          }
+        });   
+      };
 
         </script>
   
