@@ -111,6 +111,21 @@ router.post('/verifymoney/', function(req,res){
 
 });
 
+router.post('/transfermoney/:id/:other', function(req,res){
+  var value=req.params.id;
+  var account=req.params.other;
+
+  var  txnObject = {
+    from: account,
+    gas: 3000000,
+    value: value
+}
+ 
+  var collectTx=instance.PagarMas.sendTransaction(txnObject);
+  console.log(collectTx);
+  return res.json({datatransfer:collectTx});        
+
+});
 
 
 

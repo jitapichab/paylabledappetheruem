@@ -107,19 +107,16 @@
         
       });
 
-      $("#transfer").click(function() {
+      $("#transfermony").click(function() {
+        console.log("se pulso el boton")
+        var value=$('#transferiracontrato').val();;
         var account_selector= $('#accounts').val();
         $.post("/transfermoney/"+value+'/'+account_selector, function(res){
-          console.log(res.dataverify);
-          $("#verifimoney").text(res.dataverify); 
+          console.log(res.datatransfer);
+          $("#transferlabelmoney").text(res.datatransfer); 
         });
         
       });
-
-
-
-
-
 
 
 
